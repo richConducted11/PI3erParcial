@@ -1,0 +1,216 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  /* HackLab Cyberpunk Colors */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #111111;
+  --card-foreground: #ffffff;
+  --popover: #0c0c0c;
+  --popover-foreground: #ffffff;
+  --primary: #24eef7;
+  --primary-foreground: #000000;
+  --secondary: #48e5c2;
+  --secondary-foreground: #000000;
+  --muted: #1a1a1a;
+  --muted-foreground: #c9c9c9;
+  --accent: #b59efe;
+  --accent-foreground: #000000;
+  --destructive: #ff3b3b;
+  --destructive-foreground: #ffffff;
+  --success: #3ef587;
+  --warning: #ffd54f;
+  --border: rgba(36, 238, 247, 0.2);
+  --input: #0c0c0c;
+  --input-background: #0c0c0c;
+  --switch-background: #1a1a1a;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #24eef7;
+  --chart-1: #24eef7;
+  --chart-2: #48e5c2;
+  --chart-3: #b59efe;
+  --chart-4: #3ef587;
+  --chart-5: #ffd54f;
+  --radius: 0.5rem;
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #24eef7;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #111111;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(36, 238, 247, 0.2);
+  --sidebar-ring: #24eef7;
+}
+
+.dark {
+  /* Already in dark mode by default, but keeping for consistency */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #111111;
+  --card-foreground: #ffffff;
+  --popover: #0c0c0c;
+  --popover-foreground: #ffffff;
+  --primary: #24eef7;
+  --primary-foreground: #000000;
+  --secondary: #48e5c2;
+  --secondary-foreground: #000000;
+  --muted: #1a1a1a;
+  --muted-foreground: #c9c9c9;
+  --accent: #b59efe;
+  --accent-foreground: #000000;
+  --destructive: #ff3b3b;
+  --destructive-foreground: #ffffff;
+  --border: rgba(36, 238, 247, 0.2);
+  --input: #0c0c0c;
+  --ring: #24eef7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Glow effects for interactive elements */
+.glow-cyan {
+  box-shadow: 0 0 10px rgba(36, 238, 247, 0.3), 0 0 20px rgba(36, 238, 247, 0.1);
+}
+
+.glow-violet {
+  box-shadow: 0 0 10px rgba(181, 158, 254, 0.3), 0 0 20px rgba(181, 158, 254, 0.1);
+}
+
+.glow-success {
+  box-shadow: 0 0 10px rgba(62, 245, 135, 0.3), 0 0 20px rgba(62, 245, 135, 0.1);
+}
+
+/* Code/Terminal font */
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #24eef7;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #48e5c2;
+}
