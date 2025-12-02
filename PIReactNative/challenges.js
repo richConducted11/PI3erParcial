@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Platform } from 'react-native';
 import { ShieldAlert, Terminal, CheckCircle, Lock, PlayCircle, ArrowRight } from 'lucide-react-native';
-import { COLORS, DIFFICULTY_COLORS, FONTS } from '../theme'; // Ajusta la ruta
+import { COLORS, DIFFICULTY_COLORS, FONTS } from './theme';
 
 // DATOS (Igual que antes)
 const CHALLENGES_DATA = [

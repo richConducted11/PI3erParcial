@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Trophy, Target, Flame, Award, PlayCircle, ArrowRight, CheckCircle, ChevronRight, Lock } from 'lucide-react-native';
-import { COLORS, COLORS as THEME } from '../theme'; // Importamos el mismo tema
+import { COLORS, COLORS as THEME } from './theme';
 
 // --- UI COMPONENTS REUTILIZABLES ---
 

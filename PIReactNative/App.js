@@ -1,10 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { View, Text, Button, ActivityIndicator, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Button, ActivityIndicator, StyleSheet, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Home, Map, Trophy, BookOpen, User as UserIcon, LogOut, ChevronRight } from 'lucide-react-native';
+
+// Importar componentes personalizados
+import {
+  Button as CustomButton,
+  Card,
+  Badge,
+  StatCard,
+  ChallengeItem,
+  LeaderboardItem,
+  SectionHeader
+} from './components';
+import { TutorialsScreen as TutorialsView } from './tutorials';
+import { formatNumber, getAvatarUrl } from './utils';
 
 const MOCK_USER = {
   id: '1',
@@ -98,63 +111,85 @@ const RegisterScreen = ({ navigation }) => {
 
 const DashboardScreen = ({ navigation }) => {
   const { user } = useAuth();
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       <Text style={styles.title}>Hola, {user?.name} 👋</Text>
 
       <View style={styles.statsContainer}>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>{user?.level}</Text>
-          <Text style={styles.statLabel}>Nivel</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>{user?.points}</Text>
-          <Text style={styles.statLabel}>Puntos</Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>{user?.streak}🔥</Text>
-          <Text style={styles.statLabel}>Racha</Text>
-        </View>
+        <StatCard label="Nivel" value={user?.level} iconName="award" colorClass="primary" />
+        <StatCard label="Puntos" value={user?.points} iconName="target" colorClass="success" />
+        <StatCard label="Racha" value={`${user?.streak}🔥`} iconName="zap" colorClass="warning" />
       </View>
 
-      <Text style={styles.sectionTitle}>Continuar Aprendiendo</Text>
-      <TouchableOpacity
-        style={styles.actionCard}
-        onPress={() => navigation.navigate('ChallengeDetail', { id: 'sql-injection-1', title: 'Inyección SQL Básica' })}
-      >
-        <Text style={styles.actionText}>Inyección SQL - Nivel 1</Text>
-        <ChevronRight color="#666" size={20} />
-      </TouchableOpacity>
-    </View>
+      <SectionHeader
+        title="Continuar Aprendiendo"
+        actionText="Ver todos"
+        onAction={() => navigation.navigate('Challenges')}
+      />
+
+      <ChallengeItem
+        challenge={{
+          id: '1',
+          title: 'Inyección SQL Básica',
+          difficulty: 'Easy',
+          points: 100,
+          category: 'SQL Injection',
+          status: 'in-progress',
+          progress: 65
+        }}
+        onPress={(id) => navigation.navigate('ChallengeDetail', { id, title: 'Inyección SQL Básica' })}
+      />
+    </ScrollView>
   );
 };
 
-const ChallengesScreen = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Mapa de Desafíos</Text>
-    <TouchableOpacity
-      style={styles.actionCard}
-      onPress={() => navigation.navigate('ChallengeDetail', { id: 'xss-stored', title: 'XSS Almacenado' })}
-    >
-      <Text style={styles.actionText}>Misión: XSS Almacenado</Text>
-      <Text style={{ color: '#22c55e' }}>Difícil</Text>
-    </TouchableOpacity>
-  </View>
-);
+const ChallengesScreen = ({ navigation }) => {
+  const challenges = [
+    { id: '1', title: 'SQL Injection Básica', difficulty: 'Easy', points: 100, category: 'SQL Injection', status: 'completed' },
+    { id: '2', title: 'Blind SQL Injection', difficulty: 'Medium', points: 150, category: 'SQL Injection', status: 'available' },
+    { id: '3', title: 'XSS Reflejado', difficulty: 'Easy', points: 80, category: 'XSS', status: 'available' },
+    { id: '4', title: 'XSS Almacenado', difficulty: 'Hard', points: 200, category: 'XSS', status: 'available' },
+    { id: '5', title: 'CSRF Token Bypass', difficulty: 'Medium', points: 180, category: 'CSRF', status: 'in-progress', progress: 65 },
+  ];
 
-const LeaderboardScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Tabla de Posiciones</Text>
-    <Text style={{ color: '#888' }}>Top Hackers de la semana</Text>
-  </View>
-);
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <Text style={styles.title}>Mapa de Desafíos</Text>
+      {challenges.map((challenge) => (
+        <ChallengeItem
+          key={challenge.id}
+          challenge={challenge}
+          onPress={(id) => navigation.navigate('ChallengeDetail', { id, title: challenge.title })}
+        />
+      ))}
+    </ScrollView>
+  );
+};
 
-const TutorialsScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Academia</Text>
-    <Text style={{ color: '#888' }}>Guías y documentación</Text>
-  </View>
-);
+const LeaderboardScreen = () => {
+  const players = [
+    { rank: 1, name: 'Sarah Chen', points: 8450, avatar: getAvatarUrl('Sarah Chen') },
+    { rank: 2, name: 'Mike Rodriguez', points: 7820, avatar: getAvatarUrl('Mike Rodriguez') },
+    { rank: 3, name: 'Emma Wilson', points: 7350, avatar: getAvatarUrl('Emma Wilson') },
+    { rank: 4, name: 'Alex Rivera', points: 6890, avatar: getAvatarUrl('Alex Rivera') },
+    { rank: 5, name: 'David Kim', points: 6420, avatar: getAvatarUrl('David Kim') },
+  ];
+
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+      <Text style={styles.title}>Tabla de Posiciones</Text>
+      <Text style={{ color: '#888', marginBottom: 20 }}>Top Hackers de la semana</Text>
+      {players.map((player) => (
+        <LeaderboardItem key={player.rank} player={player} onPress={(p) => console.log('Ver perfil', p.name)} />
+      ))}
+    </ScrollView>
+  );
+};
+
+const TutorialsScreen = ({ navigation }) => {
+  return <TutorialsView navigation={navigation} />;
+};
 
 const ProfileScreen = () => {
   const { user, logout } = useAuth();
@@ -174,15 +209,19 @@ const ProfileScreen = () => {
 const ChallengeDetailScreen = ({ route, navigation }) => {
   const { title } = route.params;
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.card}>
+      <Card style={{ marginBottom: 20 }}>
         <Text style={{ color: '#ccc', marginBottom: 20 }}>
           Aquí iría la terminal interactiva o las instrucciones del laboratorio de hacking.
         </Text>
-        <Button title="Validar Bandera (Flag)" color="#22c55e" onPress={() => alert('¡Correcto!')} />
-      </View>
-    </View>
+        <Text style={{ color: '#24eef7', fontFamily: 'monospace', marginBottom: 20 }}>
+          Target: http://vulnerable-site.com/login{'\n'}
+          Hint: Intenta usar ' OR '1'='1
+        </Text>
+        <CustomButton text="Validar Bandera (Flag)" variant="primary" onPress={() => alert('¡Correcto!')} />
+      </Card>
+    </ScrollView>
   );
 };
 
@@ -307,8 +346,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
+  },
+  scrollContent: {
     padding: 20,
-    paddingTop: 50, // Espacio para el status bar
+    paddingTop: 50,
   },
   logoText: {
     fontSize: 40,
@@ -354,41 +395,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
-  },
-  statBox: {
-    backgroundColor: '#18181b',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    width: '30%',
-    borderWidth: 1,
-    borderColor: '#27272a',
-  },
-  statNumber: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#22d3ee',
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#a1a1aa',
-    marginTop: 4,
-  },
-  actionCard: {
-    backgroundColor: '#18181b',
-    padding: 16,
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#27272a',
-  },
-  actionText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
+    gap: 12,
   },
   logoutButton: {
     flexDirection: 'row',
@@ -397,6 +404,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ef4444', // Red-500
     padding: 12,
     borderRadius: 8,
-    marginTop: 'auto',
+    marginTop: 20,
   }
 });

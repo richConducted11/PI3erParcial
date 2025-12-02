@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, StatusBar } from 'react-native';
 import { Trophy, Medal, Award } from 'lucide-react-native'; // Iconos para el top 3
-import { COLORS, FONTS } from '../theme'; // Tu archivo de tema
+import { COLORS, FONTS } from './theme';
 
 // ==========================================
 // 1. DATOS DE EJEMPLO (MOCK DATA)
